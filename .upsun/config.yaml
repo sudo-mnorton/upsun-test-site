@@ -25,10 +25,10 @@ applications:
 
     # Mounts define directories that are writable after the build is complete.
     # More information: https://docs.upsun.com/create-apps/app-reference/single-runtime-image.html#mounts
-    # mounts:
-    #   "/var/uploads": # Represents the path in the app.
-    #     source: "storage" # "storage" sources are unique to the app, but shared among instances of the app. "service" sources can be shared among apps.
-    #     source_path: "var/uploads" # The subdirectory within the mounted disk (the source) where the mount should point.
+    mounts:
+      "/hello/static": # Represents the path in the app.
+         source: "storage" # "storage" sources are unique to the app, but shared among instances of the app. "service" sources can be shared among apps.
+         source_path: "static_assets" # The subdirectory within the mounted disk (the source) where the mount should point.
 
     # The web key configures the web server running in front of your app.
     # More information: https://docs.upsun.com/create-apps/app-reference/single-runtime-image.html#web
@@ -38,14 +38,14 @@ applications:
       commands:
         # The command to launch your app. If it terminates, it’s restarted immediately.
         # You can use the $PORT or the $SOCKET environment variable depending on the socket family of your upstream
-        start: "echo 'Put your web server command in here! You need to listen to \"$UNIX\" unix socket. Read more about it here: https://docs.upsun.com/create-apps/app-reference/single-runtime-image.html#web-commands'; sleep 60"
+        start: "flask run -p $PORT"
       # You can listen to a UNIX socket (unix) or a TCP port (tcp, default).
       # Whether your app should speak to the webserver via TCP or Unix socket. Defaults to tcp
       # More information: https://docs.upsun.com/create-apps/app-reference/single-runtime-image.html#where-to-listen
       upstream:
         # Whether your app should speak to the webserver via TCP or Unix socket. Defaults to tcp
         # More information: https://docs.upsun.com/create-apps/app-reference/single-runtime-image.html#where-to-listen
-        socket_family: unix
+        socket_family: tcp
       # Each key in locations is a path on your site with a leading /.
       # More information: https://docs.upsun.com/create-apps/app-reference/single-runtime-image.html#locations
       locations:
@@ -95,15 +95,15 @@ applications:
       # More information: https://docs.upsun.com/create-apps/hooks/hooks-comparison.html#build-hook
       build: |
         set -eux
-        
-        # Add build steps here.
-        # echo 'I am a build step'
+        pip install --upgrade pip
+        pip install -r requirements.txt
+        npm install
         
       # The deploy hook is run after the app container has been started, but before it has started accepting requests.
       # More information: https://docs.upsun.com/create-apps/hooks/hooks-comparison.html#deploy-hook
       deploy: |
         set -eux
-        # echo 'Put your deploy command here'
+        npm run build
         
 
       # The post_deploy hook is run after the app container has been started and after it has started accepting requests.
