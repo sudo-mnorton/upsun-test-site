@@ -96,7 +96,7 @@ applications:
       build: |
         set -eux
         pip install --upgrade pip
-        pip install -r app/requirements.txt
+        pip install -r requirements.txt
         npm install
         
       # The deploy hook is run after the app container has been started, but before it has started accepting requests.
