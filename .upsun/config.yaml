@@ -26,7 +26,7 @@ applications:
     # Mounts define directories that are writable after the build is complete.
     # More information: https://docs.upsun.com/create-apps/app-reference/single-runtime-image.html#mounts
     mounts:
-      "/hello/static": # Represents the path in the app.
+      "/app/static": # Represents the path in the app.
          source: "storage" # "storage" sources are unique to the app, but shared among instances of the app. "service" sources can be shared among apps.
          source_path: "static_assets" # The subdirectory within the mounted disk (the source) where the mount should point.
 
