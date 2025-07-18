@@ -50,7 +50,6 @@ applications:
       # More information: https://docs.upsun.com/create-apps/app-reference/single-runtime-image.html#locations
       locations:
         "/":
-          root: "app"
           passthru: true
           
         
