@@ -45,11 +45,12 @@ applications:
       upstream:
         # Whether your app should speak to the webserver via TCP or Unix socket. Defaults to tcp
         # More information: https://docs.upsun.com/create-apps/app-reference/single-runtime-image.html#where-to-listen
-        socket_family: tcp
+        socket_family: "tcp"
       # Each key in locations is a path on your site with a leading /.
       # More information: https://docs.upsun.com/create-apps/app-reference/single-runtime-image.html#locations
       locations:
         "/":
+          root: "app"
           passthru: true
           
         
@@ -96,7 +97,7 @@ applications:
       build: |
         set -eux
         pip install --upgrade pip
-        pip install -r requirements.txt
+        pip install -r app/requirements.txt
         npm install
         
       # The deploy hook is run after the app container has been started, but before it has started accepting requests.
